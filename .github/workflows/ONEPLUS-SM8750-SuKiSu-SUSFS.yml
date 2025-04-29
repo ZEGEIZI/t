@@ -25,7 +25,7 @@ on:
       KERNEL_NAME:
         description: "修改内核名称"
         required: true
-        default: '-android15-8-g013ec21bba94-abogki383916444-byKUAN@ITXUU'
+        default: '-android15-8-g013ec21bba94-abogki383916444'
 
 jobs:
   build:
@@ -48,7 +48,7 @@ jobs:
       - name: Configure Git
         run: |
          git config --global user.name "zgz"
-         git config --global user.email "coolouc@gmail.com"
+         git config --global user.email "geizize1996@outlook.com"
 
       - name: Install dependencies
         run: |
@@ -64,7 +64,7 @@ jobs:
       - name: Initialize repo and sync
         run: |
          mkdir kernel_workspace && cd kernel_workspace
-         repo init -u https://github.com/JiuGeFaCai/kernel_manifest.git -b refs/heads/oneplus/${{ github.event.inputs.CPU }} -m ${{ github.event.inputs.FEIL }}.xml --depth=1
+         repo init -u https://github.com/OnePlusOSS/kernel_manifest.git -b refs/heads/oneplus/${{ github.event.inputs.CPU }} -m ${{ github.event.inputs.FEIL }}.xml --depth=1
          repo --trace sync -c -j$(nproc --all) --no-tags
          rm kernel_platform/common/android/abi_gki_protected_exports_* || echo "No protected exports!"
          rm kernel_platform/msm-kernel/android/abi_gki_protected_exports_* || echo "No protected exports!"
@@ -90,9 +90,9 @@ jobs:
            cp ../susfs4ksu/kernel_patches/fs/* ./common/fs/
            cp ../susfs4ksu/kernel_patches/include/linux/* ./common/include/linux/
            #lz4k
-           cp -r ../SukiSU_patch/other/lz4k/include/linux/* ./common/include/linux
-           cp -r ../SukiSU_patch/other/lz4k/lib/* ./common/lib
-           cp -r ../SukiSU_patch/other/lz4k/crypto/* ./common/crypto
+           #cp -r ../SukiSU_patch/other/lz4k/include/linux/* ./common/include/linux
+           #cp -r ../SukiSU_patch/other/lz4k/lib/* ./common/lib
+           #cp -r ../SukiSU_patch/other/lz4k/crypto/* ./common/crypto
            # Apply patches
            cd ./common
 
@@ -107,8 +107,8 @@ jobs:
       - name: Apply lz4kd Patches
         run: |
           cd kernel_workspace/kernel_platform/common
-          cp ../../SukiSU_patch/other/lz4k_patch/${{ github.event.inputs.KERNEL_VERSION }}/lz4kd.patch ./
-          patch -p1 -F 3 < lz4kd.patch || true
+          #cp ../../SukiSU_patch/other/lz4k_patch/${{ github.event.inputs.KERNEL_VERSION }}/lz4kd.patch ./
+          #patch -p1 -F 3 < lz4kd.patch || true
 
       - name: Add SUSFS Configuration Settings
         run: |
