@@ -152,11 +152,6 @@ jobs:
          cd kernel_workspace/kernel_platform
          sed -i 's/res="\$res\$(cat "\$file")"/res="${{ github.event.inputs.KERNEL_NAME }}"/g' ./common/scripts/setlocalversion
 
-      - name: Build kernel
-        run: |
-         cd kernel_workspace/kernel_platform
-         tools/bazel run --config=fast --config=stamp --lto=thin //common:kernel_aarch64_dist -- --dist_dir=dist
-
       - name: Add sched_ext
         run: |
          cd kernel_workspace/kernel_platform/
@@ -165,6 +160,12 @@ jobs:
          rm -rf ./sched_ext/.git
          cd common/kernel/sched
          sed -i.bak '/# include "ext.c"/a\# include "hmbird_sched_proc_main.c"\n#endif\n\n#ifdef CONFIG_SLIM_SCHED\n# include "slim_sysctl.c"' build_policy.c
+
+      - name: Build kernel
+        run: |
+         cd kernel_workspace/kernel_platform
+         tools/bazel run --config=fast --config=stamp --lto=thin //common:kernel_aarch64_dist -- --dist_dir=dist
+
 
       - name: Patch_KPM
         run: |
