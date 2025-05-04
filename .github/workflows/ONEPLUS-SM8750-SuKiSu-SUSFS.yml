@@ -157,7 +157,7 @@ jobs:
          cd kernel_workspace/kernel_platform
          tools/bazel run --config=fast --config=stamp --lto=thin //common:kernel_aarch64_dist -- --dist_dir=dist
 
-      - name: Make AnyKernel3
+      - name: Patch_KPM
         run: |
          cd kernel_workspace/kernel_platform/dist/
          curl -LO https://github.com/ShirkNeko/SukiSU_KernelPatch_patch/releases/download/0.11-beta/patch_linux
@@ -166,22 +166,22 @@ jobs:
          rm -f Image
          mv oImage Image
 
-      - name: Make AnyKernel3
-        run: |
-         if [ "${{ github.event.inputs.FEIL }}" = "oneplus_ace5_pro" ]; then
-          git clone -b a5p https://github.com/JiuGeFaCai/AnyKernel3.git --depth=1
-         else
-          git clone https://github.com/JiuGeFaCai/AnyKernel3.git --depth=1
-         fi
-         rm -rf ./AnyKernel3/.git
-         rm -rf ./AnyKernel3/push.sh
-         cp kernel_workspace/kernel_platform/dist/Image ./AnyKernel3/
+#      - name: Make AnyKernel3
+#        run: |
+#         if [ "${{ github.event.inputs.FEIL }}" = "oneplus_ace5_pro" ]; then
+#          git clone -b a5p https://github.com/JiuGeFaCai/AnyKernel3.git --depth=1
+#         else
+#          git clone https://github.com/JiuGeFaCai/AnyKernel3.git --depth=1
+#         fi
+#         rm -rf ./AnyKernel3/.git
+#         rm -rf ./AnyKernel3/push.sh
+#         cp kernel_workspace/kernel_platform/dist/Image ./AnyKernel3/
 
-      - name: Upload AnyKernel3
-        uses: actions/upload-artifact@v4
-        with:
-         name: SuKiSu_${{ env.KSUVER }}_${{ github.event.inputs.FEIL }}
-         path: ./AnyKernel3/*
+#      - name: Upload AnyKernel3
+#        uses: actions/upload-artifact@v4
+#        with:
+#         name: SuKiSu_${{ env.KSUVER }}_${{ github.event.inputs.FEIL }}
+#         path: ./AnyKernel3/*
 
       - name: Upload Image
         uses: actions/upload-artifact@v4
